@@ -66,24 +66,16 @@ script/
     build-test-install  # does all three
 ```
 
-## Build and Versioning
+## Simple build / version numbers
 
-For reproducible and traceable builds, automate versioning by injecting metadata during compilation.
+Version number should be a simple `b<count>-<arch>`, e.g. `contextual b12-arm64`
 
-1.  **Calculate Metadata:** In your `script/build` script, derive metadata from git (e.g., `git rev-list --count HEAD`).
-2.  **Construct Version String:** Create a `version` string (e.g., `b<count>-<arch>`).
-3.  **Inject via `-ldflags`:** Use Go's `-ldflags` during `go build` to overwrite a `Version` variable defined in a `version` package:
+This means:
 
-    ```bash
-    go build -ldflags "-X github.com/username/project/pkg/version.Version=${version}" -o "bin/toolname" ./cmd/toolname
-    ```
+- it's build number `12`
+- the binary is build for `arm64`
 
-Ensure your Go code has a corresponding `pkg/version` package:
-
-```go
-package version
-var Version = "dev"
-```
+Examples how to do this easily, using the number of commit as the build number, see how the `build` scripts work in [contextual](https://github.com/jefflunt/contextual) and [fcp-cli](https://github.com/jefflunt/fcp-cli)
 
 ## Cross-platform, and ready-to-use
 
