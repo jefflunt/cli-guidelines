@@ -11,7 +11,85 @@ Both of the above tools have an `agent_docs/` folder, which is described in [age
 
 ---
 
-## 1. Project Structure
+Here are some draft rules.
+
+## Use sub-commands rather than flag, when possible
+
+Do provide specific sub-commands that perform common actions:
+
+```
+<cmd> <sub-cmd> [argument ...]
+git status
+git log
+```
+
+An alternate, example design that would not be preferred would be:
+
+```
+git --status [argument ...]
+git --log    [argument ...]
+```
+
+## The `help` should be a sub-command, not a flag
+
+```
+contextual help
+fcp-cli help
+```
+
+## Easy to configure
+
+```
+~/.<tool name>/config.yml
+~/.contextual/config.yml
+~/.fcp-cli/config.yml
+```
+
+## Reserve `-v` / `--verbose` and `-c` / `--config`  flags
+
+### `-v` / `--verbose`
+
+Reserve the `-v` / `--verbose` flag for producing verbose/debug ouput, and print debug output to `stderr` (see streams, below). When the user doesn't use `-v` / `--verbose`, then the user should only get standard output suitable for piping to other commands.
+
+### `-c` / `--config`
+
+By default, configuration for a CLI tool should localed in `~/.<cli name>/config.yml`. But users should be able to specify the path to a config file using the `-c` / `--config` flag.
+
+## Easy to build & install
+
+```
+script/
+    build               # just builds
+    test                # just tests
+    install             # just installs
+    build-test-install  # does all three
+```
+
+## Cross-platform, and ready-to-use
+
+If building a tool for adoption by others, provide zero-dependency compiled binaries that users can:
+
+- directly download
+- put in their `PATH`
+- run from anywhere
+- run without an external DLLs, `libc`, or anything else
+- are cross-platform if possible
+
+In other words, give users a ready-to-use executable. The one exception to the no-dependency rule is that your CLI can depend on other no-dependency CLI tools in order to combine/compose their capabilities. But by not trying to do too much, you allow your tool to be recombined with other tools more easily.
+
+## CLI Behavior and Streams
+
+Respect Unix philosophy principles to enable piping and automation.
+
+*   **Stdout (`stdout`):** Reserved exclusively for data/results. This ensures output can be cleanly redirected or piped (`|`) to other tools.
+*   **Stderr (`stderr`):** Reserved for logs, warnings, and error messages.
+*   **Graceful Degradation:** Where possible, if optional configuration is missing, log a warning to `stderr` and continue functionality rather than failing immediately.
+
+## Prefer `go` as the programming language
+
+Prefer `go` as the implementation language, since it has great cross-platform/cross-compilation support, and is well understood by LLMs.
+
+## Standard folder structure
 
 Organize projects to clearly separate public entry points from internal logic.
 
@@ -21,23 +99,7 @@ Organize projects to clearly separate public entry points from internal logic.
 *   `script/`: Standardized scripts for development operations (`build`, `test`, `install`).
 *   `agent_docs/`: Agent-first architectural and pattern documentation (mandatory for complex projects).
 
-## 2. CLI Behavior and Streams
-
-Respect Unix philosophy principles to enable piping and automation.
-
-*   **Stdout (`stdout`):** Reserved exclusively for data/results. This ensures output can be cleanly redirected or piped (`|`) to other tools.
-*   **Stderr (`stderr`):** Reserved for logs, warnings, and error messages.
-*   **Graceful Degradation:** Where possible, if optional configuration is missing, log a warning to `stderr` and continue functionality rather than failing immediately.
-
-## 3. Interaction Design
-
-*   **Arguments vs. Configuration:**
-    *   Use **arguments** for simple, immediate actions (e.g., `tool <item>`).
-    *   Use **configuration files (YAML/JSON)** for complex, stateful, or high-configuration tasks (e.g., `tool --config config.yaml`).
-    *   **Configuration Location:** Store user-specific configuration files in a hidden directory within the user's home directory (e.g., `~/.toolname/config.yml`) to maintain state and preferences across invocations without needing flags for every run.
-*   **Usage Contract:** Clearly define what CLI arguments are expected and what the tool will do with them in `README.md`.
-
-## 4. Documentation
+## LLM-friendly documentation
 
 Documentation is a first-class citizen, designed for both humans and AI agents.
 
@@ -46,8 +108,3 @@ Documentation is a first-class citizen, designed for both humans and AI agents.
     *   **Usage Examples:** Concrete, executable examples.
     *   **Output Contract:** A description of what will be printed to `stdout` (e.g., block formats).
 *   **Agent-First Docs (`agent_docs/`):** For non-trivial projects, maintain a directory dedicated to architectural overview, design patterns, and deep dives. These are based on the patterns established in [agent_docs](https://github.com/jefflunt/agent_docs). This helps AI agents understand the codebase instantly without searching the entire project.
-
----
-
-### Conflicts
-In cases of design conflicts, these guidelines favor the structure and behavior of the `contextual` repository.
