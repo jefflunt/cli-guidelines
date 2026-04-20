@@ -82,13 +82,16 @@ In other words, give users a ready-to-use executable. The one exception to the n
 
 Respect Unix philosophy principles to enable piping and automation.
 
-*   **Stdout (`stdout`):** Reserved exclusively for data/results. This ensures output can be cleanly redirected or piped (`|`) to other tools.
-*   **Stderr (`stderr`):** Reserved for logs, warnings, and error messages.
-*   **Graceful Degradation:** Where possible, if optional configuration is missing, log a warning to `stderr` and continue functionality rather than failing immediately.
+*   **`stdout`:** reserved exclusively for data/results. This ensures output can be cleanly redirected or piped (`|`) to other tools.
+*   **`stderr`:** reserved for logs, warnings, and error messages.
 
 ## Prefer `go` as the programming language
 
-Prefer `go` as the implementation language, since it has great cross-platform/cross-compilation support, and is well understood by LLMs.
+`go` is preferred for the following reasons:
+
+- in many cases, `go` supports statically linked, zero-dependency binaires
+- the simplicity of `go` make it easy to learn, and easy for people and LLMs to write
+- `go` supports cross-compilation out of the box
 
 ## Standard folder structure
 
