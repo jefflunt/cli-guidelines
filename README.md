@@ -9,28 +9,33 @@ NOTE: Both of the above tools have an `agent_docs/` folder, which is described i
 
 ---
 
-## Use sub-commands rather than flag, when possible
+## Prefer sub-commands over flags to alter behavior
 
-Do provide specific sub-commands that perform common actions:
+A good design:
 
 ```
 <cmd> <sub-cmd> [argument ...]
 git status
 git log
+git help
 ```
 
-An alternate, example design that would not be preferred would be:
+## `help` should be a sub-command, not a flag
 
-```
-git --status [argument ...]
-git --log    [argument ...]
-```
+If your CLI provides help, make it a sub-command rather than a flag. If your CLI has a complex manual
 
-## The `help` should be a sub-command, not a flag
+Do this:
 
 ```
 contextual help
 fcp-cli help
+```
+
+Not this:
+
+```
+contextual --help
+fcp-cli --help
 ```
 
 ## Easy to configure
