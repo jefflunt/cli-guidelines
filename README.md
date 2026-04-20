@@ -68,7 +68,9 @@ script/
 
 ## Simple build / version numbers
 
-Version number should be a simple `b<count>-<arch>`, e.g. `contextual b12-arm64` is the `12th` build for `arm64`.
+Version numbers should be a simple `b<count>-<arch>`, e.g. `contextual b12-arm64`.
+
+`b12` means verion `12` (or build 12). `arm64` is the CPU architecture the binary is compiled for.
 
 Examples how to do this easily, using the number of commits as the build number, see how the `build` scripts work in [contextual](https://github.com/jefflunt/contextual) and [fcp-cli](https://github.com/jefflunt/fcp-cli).
 
