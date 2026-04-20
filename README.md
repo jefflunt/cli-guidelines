@@ -58,12 +58,31 @@ By default, configuration for a CLI tool should localed in `~/.<cli name>/config
 
 ## Easy to build & install
 
-```
+```bash
 script/
     build               # just builds
     test                # just tests
     install             # just installs
     build-test-install  # does all three
+```
+
+## Build and Versioning
+
+For reproducible and traceable builds, automate versioning by injecting metadata during compilation.
+
+1.  **Calculate Metadata:** In your `script/build` script, derive metadata from git (e.g., `git rev-list --count HEAD`).
+2.  **Construct Version String:** Create a `version` string (e.g., `b<count>-<arch>`).
+3.  **Inject via `-ldflags`:** Use Go's `-ldflags` during `go build` to overwrite a `Version` variable defined in a `version` package:
+
+    ```bash
+    go build -ldflags "-X github.com/username/project/pkg/version.Version=${version}" -o "bin/toolname" ./cmd/toolname
+    ```
+
+Ensure your Go code has a corresponding `pkg/version` package:
+
+```go
+package version
+var Version = "dev"
 ```
 
 ## Cross-platform, and ready-to-use
