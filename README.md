@@ -1,17 +1,13 @@
 # CLI Design Guidelines
 
-This repository serves as a set of established guidelines for designing and structuring command-line interface (CLI) applications, derived from the patterns observed in `contextual` and `fcp-cli`.
-
-This repo contains a set of design guidelines for CLI tools. Inspiration is taken from a couple of existing tools:
+This repository serves as a set of established guidelines for designing and structuring command-line interface (CLI) applications. The first draft of these guidelines were derived from the patterns observed in the following repos:
 
 - [contextual](https://github.com/jefflunt/contextual)
 - [fcp-cli](https://github.com/jefflunt/fcp-cli)
 
-Both of the above tools have an `agent_docs/` folder, which is described in [agent_docs](https://github.com/jefflunt/agent_docs)
+NOTE: Both of the above tools have an `agent_docs/` folder, which is described in [agent_docs](https://github.com/jefflunt/agent_docs). See the "LLM-friendly documentation" section below.
 
 ---
-
-Here are some draft rules.
 
 ## Use sub-commands rather than flag, when possible
 
